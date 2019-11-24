@@ -8,6 +8,8 @@ import flask
 import praw
 from flask import Flask, render_template, request
 from sklearn.externals import joblib
+from json.encoder import JSONEncoder
+
 
 
 app=Flask(__name__)
@@ -28,10 +30,17 @@ def register():
         nm = request.form.get("url")
         mm=nm 
         phrase=nm       
-        filename2='log_gun_model_trained3.sav'
-        loaded_model2 = joblib.load(filename2)
-        arg=loaded_model2.predict(([phrase]))
-        from json.encoder import JSONEncoder
+        #filename2='f.pkl'
+        
+        filename='f.pkl'
+        load_lr_model =pickle.load(open(filename, 'rb'))
+
+        #loaded_model2 = joblib.load(filename2)
+        
+        #arg=loaded_model2.predict(([phrase]))
+        
+        arg=load_lr_model.predict(([phrase]))
+
         final_entity = { "predicted_argument": [arg[0]]}
         # directly called encode method of JSON
         print (JSONEncoder().encode(final_entity))       
